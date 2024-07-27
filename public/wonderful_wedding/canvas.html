@@ -15,6 +15,11 @@
   </noscript>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;display=swap" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500&family=Great+Vibes&family=Roboto:wght@400;700&family=Lobster&family=Pacifico&family=Oswald:wght@400;500&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Raleway:wght@400;700&family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Poppins:wght@400;700&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;display=swap" media="print"
     onload="this.media='all'" />
   <noscript>
@@ -57,14 +62,16 @@
       <div class="container">
         <div class="row">
           <div class="col card" style="width: 18rem;border:0px;">
-            <img class="card-img-top" src="../images/template1.png" alt="Card image cap" onclick="loadImageToCanvas(this.src)">
+            <img class="card-img-top" src="../images/template1.png" alt="Card image cap"
+              onclick="loadImageToCanvas(this.src)">
 
             <div class="card-body">
               <p class="card-text">Template 1</p>
             </div>
           </div>
           <div class="col card" style="width: 18rem;border:0px;">
-            <img class="card-img-top" src="../images/template_2.png" alt="Card image cap"  onclick="loadImageToCanvas(this.src)">
+            <img class="card-img-top" src="../images/template_2.png" alt="Card image cap"
+              onclick="loadImageToCanvas(this.src)">
             <div class="card-body">
               <p class="card-text">Template 2</p>
             </div>
@@ -73,13 +80,15 @@
         </div>
         <div class="row">
           <div class="col card" style="width: 18rem;border:0px;">
-            <img class="card-img-top" src="../images/template_3.png" alt="Card image cap"  onclick="loadImageToCanvas(this.src)">
+            <img class="card-img-top" src="../images/template_3.png" alt="Card image cap"
+              onclick="loadImageToCanvas(this.src)">
             <div class="card-body">
               <p class="card-text">Template 3</p>
             </div>
           </div>
           <div class="col card" style="width: 18rem;border:0px;">
-            <img class="card-img-top" src="../images/template_4.png" alt="Card image cap"  onclick="loadImageToCanvas(this.src)">
+            <img class="card-img-top" src="../images/template_4.png" alt="Card image cap"
+              onclick="loadImageToCanvas(this.src)">
             <div class="card-body">
               <p class="card-text">Template 4</p>
             </div>
@@ -120,302 +129,106 @@
 
         <div class="container-fluid">
           <div class="row">
-            <div class="collapse multi-collapse" id="multiCollapseExample1">
-              <div class="card card-body">
-                Some placeholder content for the first collapse component of this multi-collapse example. This panel is
-                hidden by default but revealed when the user activates the relevant trigger.
+            <div id="slideDown" class="slide-down" style="height: 40px;">
+              <div class="icon-buttons">
+                <button id="cropBtn" class="icon-button"><i class="fas fa-crop-alt"></i> Crop</button>
+                <button id="replaceBtn" class="icon-button"><i class="fas fa-sync-alt"></i> Replace</button>
+                <button id="deleteBtn" class="icon-button"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button id="downloadBtn" class="icon-button"><i class="fas fa-download"></i> Download</button>
+                <button id="closeBtn" class="icon-button"><i class="fas fa-times"></i> Close</button>
               </div>
             </div>
           </div>
-          <div class="row text-center">
-            <div class="col-md-3">
-              <div class="row">
-                <div class="col-md-auto">
-                  <div>
-                    <a id="textIcon" class="btn btn-link" style="font-size: 2rem" href="#"><i class="fa-solid fa-font"
-                        aria-hidden="true"></i></a>
-                  </div>
-                  <div>
-                    <a id="imageIcon" class="btn btn-link" style="font-size: 2rem" href="#"><i class="fa-solid fa-image"
-                        aria-hidden="true"></i></a>
-                  </div>
-                </div>
-                <div class="col md-6"
-                  style="box-shadow: 0 5px 10px #0000001a;padding: 20px; background-color: #f8f9fa!important;">
-                  <div id="textOptions">
-                    <div>
-                      <h4>Text</h4>
-                      <div id="text-areas">
-                    
-                      </div>
-                      <br />
-                      <div>
-                        <button id="addTextButton" class="btn btn-primary btn-submit" type="submit">Add Text</button>
-                      </div>
-                    </div>
 
-                  </div>
-                  <div id="imageOptions" style="display:none">
-                    <h4>Add Image</h4>
-                    <div>
-                      <input type="file" id="fileInput" accept="image/*">
+
+        </div>
+
+        <div class="row text-center">
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-auto">
+                <div>
+                  <a id="textIcon" class="btn btn-link" style="font-size: 2rem" href="#"><i class="fa-solid fa-font"
+                      aria-hidden="true"></i></a>
+                </div>
+                <div>
+                  <a id="imageIcon" class="btn btn-link" style="font-size: 2rem" href="#"><i class="fa-solid fa-image"
+                      aria-hidden="true"></i></a>
+                </div>
+              </div>
+              <div class="col md-6"
+                style="box-shadow: 0 5px 10px #0000001a;padding: 20px; background-color: #f8f9fa!important;">
+                <div id="textOptions">
+                  <div>
+                    <h4>Text</h4>
+                    <div id="text-areas">
+
                     </div>
+                    <br />
+                    <div>
+                      <button id="addTextButton" class="btn btn-primary btn-submit" type="submit">Add Text</button>
+                    </div>
+                  </div>
+
+                </div>
+                <div id="imageOptions" style="display:none">
+                  <h4>Add Image</h4>
+                  <div>
+                    <input type="file" id="fileInput" accept="image/*">
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-9">
-              <div class="row">
-                <div class="col md-6 pb-3">
-                  <!-- <div class="container"style="height:200px">
+          </div>
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col md-6 pb-3">
+                <!-- <div class="container"style="height:200px">
                     <div class="row">
                       <div class="col-md-1" style="background-color: orange";>
                         Hello
                       </div>
                     </div>
                   </div> -->
-                  <div class="form-group">
-                    <div style="height:100px;width:100%;">
-                      <canvas id="canvas" width="500" height="400"></canvas>
-                    </div>
+                <div class="form-group">
+                  <div style="height:100px;width:100%;">
+                    <canvas id="canvas" width="500" height="400"></canvas>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-        </div>
-      </div>
-
-      <div class="ww-section" id="people">
-        <div class="container ww-couple-friends">
-          <h2 class="h1 text-center pt-3 ww-title" data-aos="zoom-in-down" data-aos-duration="1000">Groomsmen &
-            Bridesmaids</h2>
-          <div class="carousel slide" id="ww-carouselIndicator" data-ride="carousel" data-aos="zoom-in-up"
-            data-aos-duration="1000">
-            <ol class="carousel-indicators">
-              <li class="active" data-target="#ww-carouselIndicator" data-slide-to="0"></li>
-              <li data-target="#ww-carouselIndicator" data-slide-to="1"></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/groom-men-1.jpg"
-                        alt="Groom Men 1" />
-                      <div class="card-body text-center">
-                        <div class="h5">Bryan Berry</div>
-                        <p class="mb-0 text-muted">Best Friend</p>
-                        <p class="text-muted">Groomsmen</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/groom-men-2.jpg"
-                        alt="Groom Men 2" />
-                      <div class="card-body text-center">
-                        <div class="h5 text-center">Kevin Johnston</div>
-                        <p class="mb-0 text-muted">Room Mate</p>
-                        <p class="text-muted">Groomsmen</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/groom-men-3.jpg"
-                        alt="Groom Men 3" />
-                      <div class="card-body text-center">
-                        <div class="h5 text-center">Arthur Wright</div>
-                        <p class="mb-0 text-muted">Friend</p>
-                        <p class="text-muted">Groomsmen</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/bride-maid-1.jpg"
-                        alt="Bride Maid 1" />
-                      <div class="card-body text-center">
-                        <div class="h5">Rachel Lawson</div>
-                        <p class="mb-0 text-muted">Best Friend</p>
-                        <p class="text-muted">Bridesmaids</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/bride-maid-2.jpg"
-                        alt="Bride Maid 2" />
-                      <div class="card-body text-center">
-                        <div class="h5 text-center">Betty George</div>
-                        <p class="mb-0 text-muted">Room Mate</p>
-                        <p class="text-muted">Bridesmaids</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="card d-block mb-3"><img class="card-img-top" src="images/bride-maid-3.jpg"
-                        alt="Bride Maid 3" />
-                      <div class="card-body text-center">
-                        <div class="h5 text-center">Emma Snyder</div>
-                        <p class="mb-0 text-muted">Friend</p>
-                        <p class="text-muted">Bridesmaids</p>
-                        <div class="ww-social-links"><a class="btn btn-link" href="#"><i class="fab fa-facebook-f"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i class="fab fa-twitter"
-                              aria-hidden="true"></i></a><a class="btn btn-link" href="#"><i
-                              class="fab fa-google-plus-g" aria-hidden="true"></i></a><a class="btn btn-link"
-                            href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ww-section bg-light" id="gallery">
-        <div class="ww-photo-gallery">
-          <div class="container">
-            <h2 class="h1 text-center pb-3 ww-title" data-aos="zoom-in-down" data-aos-duration="1000">Photo Gallery</h2>
-            <div class="col-md-12 text-center ww-category-filter mb-4"><a
-                class="btn btn-outline-primary ww-filter-button" href="#" data-filter="all">All</a><a
-                class="btn btn-outline-primary ww-filter-button" href="#" data-filter="vacation">Our Vacation</a><a
-                class="btn btn-outline-primary ww-filter-button" href="#" data-filter="party">Party</a><a
-                class="btn btn-outline-primary ww-filter-button" href="#" data-filter="ceremony">Ceremony</a><a
-                class="btn btn-outline-primary ww-filter-button" href="#" data-filter="wedding">Wedding</a></div>
-            <div class="ww-gallery" data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300"
-              data-aos-duration="1000" data-aos-offset="0">
-              <div class="card-columns">
-                <div class="card" data-groups="[&quot;vacation&quot;,&quot;ceremony&quot;]"><a
-                    href="images/gallery-pic-1.jpg" data-toggle="lightbox" data-gallery="ww-gallery"><img
-                      class="img-fluid" src="images/gallery-pic-1.jpg" alt="Gallery Pic 1" /></a></div>
-                <div class="card" data-groups="[&quot;party&quot;,&quot;wedding&quot;]"><a
-                    href="images/gallery-pic-2.jpg" data-toggle="lightbox" data-gallery="ww-gallery"><img
-                      class="img-fluid" src="images/gallery-pic-2.jpg" alt="Gallery Pic 2" /></a></div>
-                <div class="card" data-groups="[&quot;vacation&quot;]"><a href="images/gallery-pic-3.jpg"
-                    data-toggle="lightbox" data-gallery="ww-gallery"><img class="img-fluid"
-                      src="images/gallery-pic-3.jpg" alt="Gallery Pic 3" /></a></div>
-                <div class="card" data-groups="[&quot;party&quot;,&quot;vacation&quot;]"><a
-                    href="images/gallery-pic-4.jpg" data-toggle="lightbox" data-gallery="ww-gallery"><img
-                      class="img-fluid" src="images/gallery-pic-4.jpg" alt="Gallery Pic 4" /></a></div>
-                <div class="card" data-groups="[&quot;vacation&quot;]"><a href="images/gallery-pic-5.jpg"
-                    data-toggle="lightbox" data-gallery="ww-gallery"><img class="img-fluid"
-                      src="images/gallery-pic-5.jpg" alt="Gallery Pic 5" /></a></div>
-                <div class="card" data-groups="[&quot;wedding&quot;,&quot;ceremony&quot;,&quot;party&quot;]"><a
-                    href="images/gallery-pic-6.jpg" data-toggle="lightbox" data-gallery="ww-gallery"><img
-                      class="img-fluid" src="images/gallery-pic-6.jpg" alt="Gallery Pic 6" /></a></div>
-                <div class="card" data-groups="[&quot;vacation&quot;]"><a href="images/gallery-pic-7.jpg"
-                    data-toggle="lightbox" data-gallery="ww-gallery"><img class="img-fluid"
-                      src="images/gallery-pic-7.jpg" alt="Gallery Pic 7" /></a></div>
-                <div class="card" data-groups="[&quot;wedding&quot;,&quot;party&quot;]"><a
-                    href="images/gallery-pic-8.jpg" data-toggle="lightbox" data-gallery="ww-gallery"><img
-                      class="img-fluid" src="images/gallery-pic-8.jpg" alt="Gallery Pic 8" /></a></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ww-section ww-rsvp-detail text-white" id="rsvp">
-        <div class="container" data-aos="zoom-in-up" data-aos-duration="1000">
-          <div class="col text-center">
-            <h2 class="h1 ww-title pb-3" data-aos="zoom-in-down" data-aos-duration="1000">Join Our Party</h2>
-          </div>
-          <div class="row ww-rsvp-form">
-            <div class="col-md-10">
-              <div class="card-body">
-                <form action="https://formspree.io/example@email.com" method="POST">
-                  <div class="row">
-                    <div class="col md-6 pb-3">
-                      <div class="form-group">
-                        <label for="name-input">Your Name*</label>
-                        <input class="form-control" id="name-input" type="text" name="name" required="required" />
-                      </div>
-                    </div>
-                    <div class="col-md-6 pb-3">
-                      <div class="form-group">
-                        <label for="email-input">Your Email*</label>
-                        <input class="form-control" id="email-input" type="email" name="_replyto" required="required" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col md-6 pb-3">
-                      <div class="form-group">
-                        <label for="guest-input">Number of Guests</label>
-                        <select class="form-control" id="guest-input" name="guest">
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                          <option value="4">Four</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6 pb-3">
-                      <div class="form-group">
-                        <label for="events-input">I am Attending</label>
-                        <select class="form-control" id="events-input" name="events">
-                          <option value="all-event">All Events</option>
-                          <option value="wedding-ceremony">Wedding ceremony</option>
-                          <option value="reception-party">Reception Party</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="form-group">
-                        <label for="message-input">Your Message</label>
-                        <textarea class="form-control" id="message-input" name="message" rows="4"></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col text-center">
-                      <button class="btn btn-primary btn-submit" type="submit">Send</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ww-footer bg-light">
-        <div class="container text-center py-4">
-          <p class="my-0">&copy; Wonderful Wedding. All rights reserved.</p>
-          <p class="mb-0">Design - <a class="credit" href="https://templateflip.com" target="_blank">TemplateFlip</a>
-          </p>
-        </div>
       </div>
     </div>
 
+
+    <div class="ww-footer bg-light">
+      <div class="container text-center py-4">
+        <p class="my-0">&copy; Wonderful Wedding. All rights reserved.</p>
+        <p class="mb-0">Design - <a class="credit" href="https://templateflip.com" target="_blank">TemplateFlip</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <div id="fontSelectionPanel">
+    <div class="font-option" style="font-family: 'Roboto';" onclick="selectFont('Roboto')">Roboto</div>
+    <div class="font-option" style="font-family: 'Lobster';" onclick="selectFont('Lobster')">Lobster</div>
+    <div class="font-option" style="font-family: 'Pacifico';" onclick="selectFont('Pacifico')">Pacifico</div>
+    <div class="font-option" style="font-family: 'Oswald';" onclick="selectFont('Oswald')">Oswald</div>
+    <div class="font-option" style="font-family: 'Merriweather';" onclick="selectFont('Merriweather')">Merriweather
+    </div>
+    <div class="font-option" style="font-family: 'Montserrat';" onclick="selectFont('Montserrat')">Montserrat</div>
+    <div class="font-option" style="font-family: 'Raleway';" onclick="selectFont('Raleway')">Raleway</div>
+    <div class="font-option" style="font-family: 'Open Sans';" onclick="selectFont('Open Sans')">Open Sans</div>
+    <div class="font-option" style="font-family: 'Playfair Display';" onclick="selectFont('Playfair Display')">Playfair
+      Display</div>
+    <div class="font-option" style="font-family: 'Lato';" onclick="selectFont('Lato')">Lato</div>
+    <div class="font-option" style="font-family: 'Poppins';" onclick="selectFont('Poppins')">Poppins</div>
+    <!-- Add more fonts as needed -->
   </div>
   <footer></footer>
   <script src="scripts/jquery.min.js?ver=1.1.0"></script>
@@ -456,36 +269,135 @@
     const templateCloseBtn = document.getElementById('templateCloseBtn');
     const templateThumbnails = document.querySelectorAll('.template-thumbnail');
 
+    //var myOffcanvas = document.getElementById('slideDownId')
+    //var slideDownBar = new bootstrap.Offcanvas(myOffcanvas)
+
 
     let img = new Image();
+    img.src = '../images/template1.png';
     let texts = []; // Array to hold text objects
     let selectedTextIndex = -1; // Index of the selected text
+    let images = [];
+    let selectedImage = null;
+    let dragging = false;
+    let resizing = false;
+    let dragOffsetX, dragOffsetY;
+    let resizeStartWidth, resizeStartHeight;
+    let initialAspectRatio;
 
     fileInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        img.onload = function () {
-          // Calculate the new canvas dimensions while maintaining the aspect ratio
-          let maxWidth = 300;
-          let ratio = img.width / img.height;
-          canvas.width = maxWidth;
-          canvas.height = maxWidth / ratio;
-
-          drawCanvas();
-        }
-        img.src = event.target.result;
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        let file = files[i];
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          let img = new Image();
+          img.onload = function() {
+            addImageToCanvas(img);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
       }
-      reader.readAsDataURL(file);
     });
+
+    function addImageToCanvas(img) {
+      const maxWidth = 100;
+      const aspectRatio = img.width / img.height;
+      const width = maxWidth;
+      const height = maxWidth / aspectRatio;
+      const x = Math.random() * (canvas.width - width);
+      const y = Math.random() * (canvas.height - height);
+
+      ctx.drawImage(img, x, y, width, height);
+
+      images.push({ img, x, y, width, height });
+    }
+
+    function onCanvasMouseDown(e) {
+      const { offsetX: mouseX, offsetY: mouseY } = e;
+      selectedImage = null;
+      images.forEach(image => {
+        if (
+          mouseX >= image.x &&
+          mouseX <= image.x + image.width &&
+          mouseY >= image.y &&
+          mouseY <= image.y + image.height
+        ) {
+          selectedImage = image;
+        }
+      });
+
+      if (selectedImage) {
+        dragOffsetX = mouseX - selectedImage.x;
+        dragOffsetY = mouseY - selectedImage.y;
+        initialAspectRatio = selectedImage.width / selectedImage.height;
+
+        if (isMouseNearBorder(mouseX, mouseY, selectedImage)) {
+          resizing = true;
+          resizeStartWidth = selectedImage.width;
+          resizeStartHeight = selectedImage.height;
+        } else {
+          dragging = true;
+        }
+      }
+
+      drawCanvas();
+    }
+
+    function onCanvasMouseMove(e) {
+      if (dragging && selectedImage) {
+        selectedImage.x = e.offsetX - dragOffsetX;
+        selectedImage.y = e.offsetY - dragOffsetY;
+        redrawCanvas();
+      } else if (resizing && selectedImage) {
+        const newWidth = Math.max(e.offsetX - selectedImage.x, 10);
+        const newHeight = newWidth / initialAspectRatio;
+        selectedImage.width = newWidth;
+        selectedImage.height = newHeight;
+        drawCanvas();
+      }
+    }
+
+    function onCanvasMouseUp() {
+      dragging = false;
+      resizing = false;
+    }
+
+    
+
+    function drawSelectionBorder(image) {
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(image.x, image.y, image.width, image.height);
+    }
+
+    function isMouseNearBorder(mouseX, mouseY, image) {
+      const near = 8; // Define how close the mouse should be to the border
+      return (
+        mouseX >= image.x + image.width - near &&
+        mouseX <= image.x + image.width + near &&
+        mouseY >= image.y &&
+        mouseY <= image.y + image.height
+      );
+    }
 
     function drawCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (img.src) {
+        // Calculate the new canvas dimensions while maintaining the aspect ratio
+        var maxWidth = 300;
+        var ratio = img.width / img.height;
+        canvas.width = maxWidth;
+        canvas.height = maxWidth / ratio;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
+      images.forEach(image => {
+        ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
+        if (image === selectedImage) {
+          drawSelectionBorder(image);
+        }
+      });
       texts.forEach((textObj, index) => {
         addTextToCanvas(textObj, index === selectedTextIndex);
       });
@@ -495,6 +407,8 @@
       ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
       ctx.fillStyle = textObj.color;
       ctx.fillText(textObj.text, textObj.x, textObj.y);
+
+
       if (isSelected) {
         const textWidth = ctx.measureText(textObj.text).width;
         const textHeight = parseInt(ctx.font, 10);
@@ -503,6 +417,45 @@
         ctx.strokeRect(textObj.x, textObj.y - textHeight, textWidth, textHeight);
       }
     }
+
+    const dragStart = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      texts.forEach((textObj, index) => {
+        const textWidth = ctx.measureText(textObj.text).width;
+        const textHeight = parseInt(ctx.font, 10);
+        if (x >= textObj.x && x <= textObj.x + textWidth && y >= textObj.y - textHeight && y <= textObj.y) {
+          textObj.isDragging = true;
+          selectedTextIndex = index;
+        }
+      });
+    };
+
+    const dragEnd = () => {
+      texts.forEach((textObj) => {
+        textObj.isDragging = false;
+      });
+    };
+
+    const drag = (event) => {
+      if (selectedTextIndex !== -1 && texts[selectedTextIndex].isDragging) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        texts[selectedTextIndex].x = x;
+        texts[selectedTextIndex].y = y;
+        drawCanvas();
+      }
+    };
+
+    canvas.addEventListener('mousedown', dragStart);
+    canvas.addEventListener('mouseup', dragEnd);
+    canvas.addEventListener('mousemove', drag);
+
+    canvas.addEventListener('mousedown', onCanvasMouseDown);
+    canvas.addEventListener('mousemove', onCanvasMouseMove);
+    canvas.addEventListener('mouseup', onCanvasMouseUp);
 
     function drawText() {
       if (text) {
@@ -516,47 +469,54 @@
       }
     }
 
-    addTextButton.addEventListener('click', function() {
-        createNewText();
+    addTextButton.addEventListener('click', function () {
+      createNewText();
     });
 
     function addTextToCanvas(textObj) {
-        ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
-        ctx.fillStyle = textObj.color;
-        ctx.fillText(textObj.text, textObj.x, textObj.y);
+      ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
+      ctx.fillStyle = textObj.color;
+      ctx.fillText(textObj.text, textObj.x, textObj.y);
     }
 
     function addTextArea(textObj) {
-        const textArea = document.createElement('textarea');
-        textArea.value = textObj.text;
-        textArea.classList = ["form-control"];
-        //textArea.style.fontFamily = textObj.fontFamily;
-        //textArea.style.color = textObj.color;
-        //textArea.style.display = 'block';
-        textArea.addEventListener('input', function() {
-            textObj.text = textArea.value;
-            drawCanvas();
-        });
-        textAreas.appendChild(textArea);
+      const textArea = document.createElement('textarea');
+      textArea.value = textObj.text;
+      textArea.classList = ["form-control"];
+      //textArea.style.fontFamily = textObj.fontFamily;
+      //textArea.style.color = textObj.color;
+      //textArea.style.display = 'block';
+      textArea.addEventListener('input', function () {
+        textObj.text = textArea.value;
         drawCanvas();
+      });
+      textAreas.appendChild(textArea);
+      drawCanvas();
     }
 
     function createNewText(text) {
-        const newText = {
-            text: text ? text : 'New Text',
-            x: 50,
-            y: 50,
-            fontSize: 20,
-            fontFamily: 'Arial',
-            color: '#000000',
-            isDragging: false,
-            selected: false
-        };
-        texts.push(newText);
-        addTextArea(newText);
+      const newText = {
+        text: text ? text : 'New Text',
+        x: 50,
+        y: 50,
+        fontSize: 20,
+        fontFamily: 'Arial',
+        color: '#000000',
+        isDragging: false,
+        selected: false
+      };
+      texts.push(newText);
+      addTextArea(newText);
     }
 
-    
+
+    // Function to change the font of all texts on the canvas
+    function changeFont(fontFamily) {
+      texts.forEach(textObj => {
+        textObj.fontFamily = fontFamily;
+      });
+      drawCanvas();
+    }
 
     canvas.addEventListener('click', function (event) {
       const rect = canvas.getBoundingClientRect();
@@ -565,6 +525,20 @@
 
       // Show the slide down menu
       slideDown.classList.add('show');
+    });
+    drawCanvas();
+
+    function showFontSelection() {
+      document.getElementById('fontSelectionPanel').style.display = 'block';
+    }
+
+    function selectFont(fontFamily) {
+      changeFont(fontFamily);
+      document.getElementById('fontSelectionPanel').style.display = 'none';
+    }
+
+    cropBtn.addEventListener('click', function () {
+      showFontSelection();
     });
 
   </script>
@@ -586,7 +560,7 @@
       img.src = src;
     }
   </script>
-  
+
 </body>
 
 </html>

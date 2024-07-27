@@ -180,3 +180,58 @@ body {
 
 .btn-outline-primary:hover {
   color: #fff; }
+
+  .slide-down {
+    display: none;
+    position: fixed;
+    top: 60px; /* Adjust according to the header height */
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 10px;
+    height:50px;
+}
+
+.slide-down.show {
+    display: block;
+}
+
+.icon-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #4a90e2;
+}
+
+.icon-button i {
+    margin-right: 5px; /* Space between icon and text */
+}
+
+#fontSelectionPanel {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+}
+.font-option {
+  font-size: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}

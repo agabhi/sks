@@ -1,0 +1,35 @@
+.slide-down {
+            display: none;
+            position: fixed;
+            top: 60px; /* Adjust according to the header height */
+            left: 0;
+            width: 100%;
+            background-color: #f1f1f1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            padding: 10px;
+            height:50px;
+        }
+
+        .slide-down.show {
+            display: block;
+        }
+
+        .icon-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #4a90e2;
+        }
+
+        .icon-button i {
+            margin-right: 5px; /* Space between icon and text */
+        }
