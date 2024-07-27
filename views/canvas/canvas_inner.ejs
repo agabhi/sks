@@ -1,0 +1,327 @@
+<div class="container" id="canvas_container">
+    <div id="slideDown" class="slide-down">
+        <div class="icon-buttons">
+            <button id="cropBtn" class="icon-button"><i class="fas fa-crop-alt"></i> Crop</button>
+            <button id="replaceBtn" class="icon-button"><i class="fas fa-sync-alt"></i> Replace</button>
+            <button id="deleteBtn" class="icon-button"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button id="downloadBtn" class="icon-button"><i class="fas fa-download"></i> Download</button>
+            <button id="closeBtn" class="icon-button"><i class="fas fa-times"></i> Close</button>
+        </div>
+        <div id="extraOptions" class="extra-options"></div>
+    </div>
+    <div class="left-panel">
+        <h1>Upload Image and Add Text on Canvas</h1>
+        <div id="optionsPanel">
+            <button id="imageIcon"><i class="fas fa-image"></i></button>
+            <button id="textIcon"><i class="fas fa-font"></i></button>
+        </div>
+        <div class="controls">
+            <div id="imageOptions">
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <div id="textOptions">
+                <div id="text-areas">
+                    
+                </div>
+                <select id="fontSelect">
+                    <option value="Arial">Arial</option>
+                    <option value="Lobster">Lobster</option>
+                    <option value="Pacifico">Pacifico</option>
+                    <option value="Raleway">Raleway</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                </select>
+                <input type="color" id="colorPicker" value="#000000">
+                <button id="addTextButton">Add Text</button>
+            </div>
+        </div>
+    </div>
+    <div class="right-panel">
+        <canvas id="canvas" width="500" height="400"></canvas>
+        <button id="changeTemplateButton" class="change-template-btn">Change Template</button>
+    </div>
+
+    <div id="templatePanel" class="template-panel">
+        <div class="close-btn" id="templateCloseBtn">&times;</div>
+        <h2>Select a Template</h2>
+        <img src="http://localhost:3000/images/template1.png" class="template-thumbnail" alt="Template 1">
+        <img src="http://localhost:3000/images/template_2.png" class="template-thumbnail" alt="Template 2">
+        <img src="http://localhost:3000/images/template3.png" class="template-thumbnail" alt="Template 3">
+    </div>
+</div>
+<script>
+    document.getElementById('imageIcon').addEventListener('click', function() {
+        document.getElementById('imageOptions').style.display = 'block';
+        document.getElementById('textOptions').style.display = 'none';
+    });
+
+    document.getElementById('textIcon').addEventListener('click', function() {
+        document.getElementById('imageOptions').style.display = 'none';
+        document.getElementById('textOptions').style.display = 'block';
+    });
+
+    const fileInput = document.getElementById('fileInput');
+    const textInput = document.getElementById('textInput');
+    const fontSelect = document.getElementById('fontSelect');
+    const colorPicker = document.getElementById('colorPicker');
+    const addTextButton = document.getElementById('addTextButton');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const slideDown = document.getElementById('slideDown');
+    const closeBtn = document.getElementById('closeBtn');
+    const cropBtn = document.getElementById('cropBtn');
+    const replaceBtn = document.getElementById('replaceBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const textAreas = document.getElementById('text-areas');    
+    const extraOptions = document.getElementById('extraOptions');
+    const changeTemplateButton = document.getElementById('changeTemplateButton');
+    const templatePanel = document.getElementById('templatePanel');
+    const templateCloseBtn = document.getElementById('templateCloseBtn');
+    const templateThumbnails = document.querySelectorAll('.template-thumbnail');
+
+
+    let img = new Image();
+    let texts = []; // Array to hold text objects
+    let selectedTextIndex = -1; // Index of the selected text
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            img.onload = function() {
+                // Calculate the new canvas dimensions while maintaining the aspect ratio
+                let maxWidth = 300;
+                let ratio = img.width / img.height;
+                canvas.width = maxWidth;
+                canvas.height = maxWidth / ratio;
+
+                drawCanvas();
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    });
+
+    function drawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (img.src) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+        texts.forEach((textObj, index) => {
+            addTextToCanvas(textObj, index === selectedTextIndex);
+        });
+    }
+
+    function addTextToCanvas(textObj, isSelected) {
+        ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
+        ctx.fillStyle = textObj.color;
+        ctx.fillText(textObj.text, textObj.x, textObj.y);
+        if (isSelected) {
+            const textWidth = ctx.measureText(textObj.text).width;
+            const textHeight = parseInt(ctx.font, 10);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(textObj.x, textObj.y - textHeight, textWidth, textHeight);
+        }
+    }
+    
+    function drawText() {
+        if (text) {
+            const lines = text.split('\n');
+            const fontSize = 20;
+            ctx.font = `${fontSize}px ${fontSelect.value}`;
+            ctx.fillStyle = colorPicker.value;
+            lines.forEach((line, index) => {
+                ctx.fillText(line, textPosition.x, textPosition.y + (index * (fontSize + 5)));
+            });
+        }
+    }
+
+    canvas.addEventListener('click', function(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Show the slide down menu
+        slideDown.classList.add('show');
+    });
+
+    addTextButton.addEventListener('click', function() {
+        createNewText();
+    });
+
+    function createNewText(text) {
+        const newText = {
+            text: text ? text : 'New Text',
+            x: 50,
+            y: 50,
+            fontSize: 20,
+            fontFamily: 'Arial',
+            color: '#000000',
+            isDragging: false,
+            selected: false
+        };
+        texts.push(newText);
+        addTextArea(newText);
+    }
+
+    function addTextToCanvas(textObj) {
+        ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
+        ctx.fillStyle = textObj.color;
+        ctx.fillText(textObj.text, textObj.x, textObj.y);
+    }
+
+    function addTextArea(textObj) {
+        const textArea = document.createElement('textarea');
+        textArea.value = textObj.text;
+        textArea.style.fontFamily = textObj.fontFamily;
+        textArea.style.color = textObj.color;
+        textArea.style.display = 'block';
+        textArea.addEventListener('input', function() {
+            textObj.text = textArea.value;
+            drawCanvas();
+        });
+        textAreas.appendChild(textArea);
+        drawCanvas();
+    }
+
+    canvas.addEventListener('mousedown', function(e) {
+        const mouseX = e.offsetX;
+        const mouseY = e.offsetY;
+        selectedTextIndex = -1;
+        texts.forEach((textObj, index) => {
+            const textWidth = ctx.measureText(textObj.text).width;
+            const textHeight = parseInt(ctx.font, 10);
+            if (mouseX >= textObj.x && mouseX <= textObj.x + textWidth && mouseY <= textObj.y && mouseY >= textObj.y - textHeight) {
+                textObj.isDragging = true;
+                textObj.selected = true;
+                selectedTextIndex = index;
+            } else {
+                textObj.selected = false;
+            }
+        });
+        if (selectedTextIndex !== -1) {
+            updateSlideDown(texts[selectedTextIndex]);
+            slideDown.classList.add('show');
+        } else {
+            slideDown.classList.remove('show');
+        }
+        drawCanvas();
+    });
+
+    canvas.addEventListener('mousemove', function(e) {
+        if (texts.some(textObj => textObj.isDragging)) {
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            texts.forEach(textObj => {
+                if (textObj.isDragging) {
+                    textObj.x = mouseX;
+                    textObj.y = mouseY;
+                    drawCanvas();
+                }
+            });
+        }
+    });
+
+    canvas.addEventListener('mouseup', function() {
+        texts.forEach(textObj => {
+            textObj.isDragging = false;
+        });
+    });
+
+    canvas.addEventListener('mouseout', function() {
+        texts.forEach(textObj => {
+            textObj.isDragging = false;
+        });
+    });
+
+    closeBtn.addEventListener('click', function() {
+        slideDown.classList.remove('show');
+    });
+
+    cropBtn.addEventListener('click', function() {
+        // Implement crop functionality here
+    });
+
+    replaceBtn.addEventListener('click', function() {
+        // Implement replace functionality here
+    });
+
+    deleteBtn.addEventListener('click', function() {
+            texts = texts.filter((textObj, index) => index !== selectedTextIndex);
+            selectedTextIndex = -1;
+            while (textAreas.firstChild) {
+                textAreas.removeChild(textAreas.firstChild);
+            }
+            texts.forEach(addTextArea);
+            slideDown.classList.remove('show');
+            drawCanvas();
+        });
+
+    // Function to download canvas as PNG
+    function downloadCanvas() {
+        const link = document.createElement('a');
+        link.download = 'canvas_image.png';
+        link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        link.click();
+    }
+
+    // Function to update the slide-down bar with extra options
+    function updateSlideDown(selectedText) {
+            extraOptions.innerHTML = ''; // Clear previous options
+            // Font select
+            const fontSelect = document.createElement('select');
+            ['Arial', 'Lobster', 'Pacifico', 'Raleway', 'Roboto', 'Open Sans'].forEach(font => {
+                const option = document.createElement('option');
+                option.value = font;
+                option.text = font;
+                if (font === selectedText.fontFamily) {
+                    option.selected = true;
+                }
+                fontSelect.appendChild(option);
+            });
+            fontSelect.addEventListener('change', function() {
+                selectedText.fontFamily = fontSelect.value;
+                drawCanvas();
+            });
+            extraOptions.appendChild(fontSelect);
+
+            // Color picker
+            const colorPicker = document.createElement('input');
+            colorPicker.type = 'color';
+            colorPicker.value = selectedText.color;
+            colorPicker.addEventListener('input', function() {
+                selectedText.color = colorPicker.value;
+                drawCanvas();
+            });
+            extraOptions.appendChild(colorPicker);
+        }
+
+    img.src = "http://localhost:3000/images/template1.png";
+    createNewText("Bride & Groom");
+
+    // Attach click event to the download button
+    document.getElementById('downloadBtn').addEventListener('click', downloadCanvas);
+
+    changeTemplateButton.addEventListener('click', function() {
+            templatePanel.classList.add('show');
+        });
+
+        templateCloseBtn.addEventListener('click', function() {
+            templatePanel.classList.remove('show');
+        });
+
+        templateThumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const newImgSrc = thumbnail.src;
+                img.src = newImgSrc;
+                drawCanvas();
+                templatePanel.classList.remove('show');
+            });
+        });
+
+    // Add more functionality to crop, replace, and delete buttons as needed
+</script>

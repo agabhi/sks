@@ -1,0 +1,93 @@
+<style>
+    /* General styles for the carousel */
+    .carousel {
+            position: relative;
+            margin-top: 0px;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        .carousel-indicators {
+            bottom: -30px; /* Adjust this value as needed */
+        }
+
+        #carouselExampleIndicators .carousel-indicators li {
+            background-color: #b2b0b0; /* Default dot color */
+        }
+
+        #carouselExampleIndicators .carousel-indicators .active {
+            background-color: #000; /* Active dot color */
+        }
+
+        /* Style for carousel controls */
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-size: 100%, 100%;
+        }
+
+        /* Additional styling for mobile responsiveness */
+        @media (max-width: 768px) {
+            .carousel-inner img {
+                height: auto;
+            }
+
+            .carousel-indicators {
+                bottom: -20px; /* Adjust this value for mobile devices */
+            }
+        }
+
+        /* Custom styles for text and button */
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .carousel-caption h1 {
+            font-family: playfair display, serif;
+            font-style: italic;
+            font-size: 2rem;
+        }
+
+        .carousel-caption a.btn {
+            margin-top: 20px;
+            font-size: 1rem;
+            background-color: transparent;
+            border-color: #fff;
+        }
+        
+</style>
+<section id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="5000">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://static.wixstatic.com/media/a3c153_7471fe024e894f8da270bf3328384024~mv2.jpg/v1/fill/w_2414,h_1200,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/a3c153_7471fe024e894f8da270bf3328384024~mv2.jpg" class="d-block w-100" alt="...">
+            <div class="carousel-caption">
+                <h1>Quick & Easy Mehndi Invite</h1>
+                <a href="canvas" class="btn btn-primary">Click here</a>
+            </div>
+        </div>
+        <div class="carousel-item ">
+            <img src="https://static.wixstatic.com/media/b65611_09ccca86fb434e4d80eecd34a5febced~mv2.jpg/v1/fill/w_2317,h_1152,al_c,q_90,enc_auto/b65611_09ccca86fb434e4d80eecd34a5febced~mv2.jpg" alt="...">
+            <div class="carousel-caption">
+                <h1>Make it all match</h1>
+                <a href="canvas" class="btn btn-primary">Shop Collection</a>
+            </div>
+        </div>
+    </div>
+</section>
