@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric.js Canvas Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="fabricCanvas" width="800" height="600"></canvas>
+<div class="button-container">
+    <button id="changeFontButton">Change Font to Arial</button>
+</div>
+
+<script>
+    // Create a Fabric.js canvas
+    var canvas = new fabric.Canvas('fabricCanvas');
+
+    // Add two images to the canvas
+    fabric.Image.fromURL('https://example.com/image1.jpg', function(img) {
+        img.set({
+            left: 50,
+            top: 50,
+            angle: 0,
+            opacity: 1
+        });
+        canvas.add(img);
+    });
+
+    fabric.Image.fromURL('https://example.com/image2.jpg', function(img) {
+        img.set({
+            left: 300,
+            top: 50,
+            angle: 0,
+            opacity: 1
+        });
+        canvas.add(img);
+    });
+
+    // Add editable text elements to the canvas
+    var text1 = new fabric.Textbox('Hello, World!', {
+        left: 50,
+        top: 400,
+        fontSize: 30,
+        fill: 'blue',
+        editable: true
+    });
+
+    var text2 = new fabric.Textbox('Fabric.js Example', {
+        left: 300,
+        top: 400,
+        fontSize: 30,
+        fill: 'green',
+        editable: true
+    });
+
+    canvas.add(text1, text2);
+
+    // Snap settings
+    var snapDistance = 10; // Distance in pixels within which objects will snap
+    var snapLine = null; // To store the current snap line
+
+    function drawSnapLine(x, y, isHorizontal) {
+        // Remove existing snap line
+        if (snapLine) {
+            canvas.remove(snapLine);
+        }
+
+        if (isHorizontal) {
+            snapLine = new fabric.Line([0, y, canvas.getWidth(), y], {
+                stroke: 'red',
+                strokeWidth: 1,
+                selectable: false,
+                evented: false
+            });
+        } else {
+            snapLine = new fabric.Line([x, 0, x, canvas.getHeight()], {
+                stroke: 'red',
+                strokeWidth: 1,
+                selectable: false,
+                evented: false
+            });
+        }
+
+        canvas.add(snapLine);
+    }
+
+    function snapToGrid(obj) {
+        var canvasWidth = canvas.getWidth();
+        var canvasHeight = canvas.getHeight();
+
+        var left = obj.left;
+        var top = obj.top;
+        var width = obj.getScaledWidth();
+        var height = obj.getScaledHeight();
+
+        var snapX = left;
+        var snapY = top;
+        var drawHorizontalLine = false;
+        var drawVerticalLine = false;
+
+        // Snap to edges of other objects
+        canvas.getObjects().forEach(function(otherObj) {
+            if (otherObj === obj) return; // Skip the current object
+
+            var otherLeft = otherObj.left;
+            var otherTop = otherObj.top;
+            var otherWidth = otherObj.getScaledWidth();
+            var otherHeight = otherObj.getScaledHeight();
+
+            // Check horizontal snapping
+            if (Math.abs(top + height - (otherTop)) < snapDistance || Math.abs(top - (otherTop + otherHeight)) < snapDistance) {
+                snapY = otherTop + otherHeight - height;
+                drawHorizontalLine = true;
+            } else if (Math.abs(top - otherTop) < snapDistance || Math.abs(top + height - (otherTop + otherHeight)) < snapDistance) {
+                snapY = otherTop;
+                drawHorizontalLine = true;
+            }
+
+            // Check vertical snapping
+            if (Math.abs(left + width - (otherLeft)) < snapDistance || Math.abs(left - (otherLeft + otherWidth)) < snapDistance) {
+                snapX = otherLeft + otherWidth - width;
+                drawVerticalLine = true;
+            } else if (Math.abs(left - otherLeft) < snapDistance || Math.abs(left + width - (otherLeft + otherWidth)) < snapDistance) {
+                snapX = otherLeft;
+                drawVerticalLine = true;
+            }
+        });
+
+        // Snap to canvas center
+        if (Math.abs(left + width / 2 - canvasWidth / 2) < snapDistance) {
+            snapX = canvasWidth / 2 - width / 2;
+            drawVerticalLine = true;
+        }
+
+        if (Math.abs(top + height / 2 - canvasHeight / 2) < snapDistance) {
+            snapY = canvasHeight / 2 - height / 2;
+            drawHorizontalLine = true;
+        }
+
+        // Snap to canvas edges
+        if (Math.abs(left) < snapDistance) {
+            snapX = 0;
+            drawVerticalLine = true;
+        }
+
+        if (Math.abs(left + width - canvasWidth) < snapDistance) {
+            snapX = canvasWidth - width;
+            drawVerticalLine = true;
+        }
+
+        if (Math.abs(top) < snapDistance) {
+            snapY = 0;
+            drawHorizontalLine = true;
+        }
+
+        if (Math.abs(top + height - canvasHeight) < snapDistance) {
+            snapY = canvasHeight - height;
+            drawHorizontalLine = true;
+        }
+
+        // Draw snap lines if needed
+        if (drawHorizontalLine) {
+            drawSnapLine(snapX + width / 2, snapY + height / 2, true);
+        } else if (drawVerticalLine) {
+            drawSnapLine(snapX + width / 2, snapY + height / 2, false);
+        } else {
+            // If no snapping, remove snap line
+            if (snapLine) {
+                canvas.remove(snapLine);
+                snapLine = null;
+            }
+        }
+
+        obj.set({
+            left: snapX,
+            top: snapY
+        });
+
+        obj.setCoords();
+        canvas.renderAll();
+    }
+
+    canvas.on('object:moving', function(e) {
+        var obj = e.target;
+        snapToGrid(obj);
+    });
+
+    canvas.on('object:modified', function() {
+        // Clear snap line after object is released
+        if (snapLine) {
+            canvas.remove(snapLine);
+            snapLine = null;
+        }
+    });
+
+    // Change font function
+    function changeFont() {
+        var activeObject = canvas.getActiveObject();
+        if (activeObject && activeObject.type === 'textbox') {
+            var selectedText = activeObject.getSelectedText();
+            if (selectedText) {
+                var newFontFamily = 'Arial'; // The new font to apply
+                var selectedTextStyle = {
+                    fontFamily: newFontFamily
+                };
+
+                // Apply the new font to the selected text
+                activeObject.setSelectionStyles(selectedTextStyle);
+                canvas.renderAll();
+            }
+        }
+    }
+
+    // Add event listener to button
+    document.getElementById('changeFontButton').addEventListener('click', changeFont);
+</script>
+
+</body>
+</html>

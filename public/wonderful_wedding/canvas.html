@@ -50,6 +50,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
 
 
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
@@ -180,18 +181,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-9">
-            <div class="row">
-              <div class="col md-6 pb-3">
-                <!-- <div class="container"style="height:200px">
-                    <div class="row">
-                      <div class="col-md-1" style="background-color: orange";>
-                        Hello
-                      </div>
-                    </div>
-                  </div> -->
+          <div class="col-md-9 d-flex justify-content-center">
+            <div class="row text-center">
+              <div class="col-md-12 pb-3">
                 <div class="form-group">
-                  <div style="height:100px;width:100%;">
+                  <div style="height:100%; width:100%; max-width: 800px;">
                     <canvas id="canvas" width="500" height="400"></canvas>
                   </div>
                 </div>
@@ -254,8 +248,10 @@
     const fontSelect = document.getElementById('fontSelect');
     const colorPicker = document.getElementById('colorPicker');
     const addTextButton = document.getElementById('addTextButton');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    let canvas = new fabric.Canvas('canvas');
+    //canvas.setHeight(500);
+    //canvas.setWidth(800);
+
     const slideDown = document.getElementById('slideDown');
     const closeBtn = document.getElementById('closeBtn');
     const cropBtn = document.getElementById('cropBtn');
@@ -285,14 +281,17 @@
     let resizeStartWidth, resizeStartHeight;
     let initialAspectRatio;
 
+
+
+
     fileInput.addEventListener('change', function (e) {
       const files = event.target.files;
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
         let reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           let img = new Image();
-          img.onload = function() {
+          img.onload = function () {
             addImageToCanvas(img);
           };
           img.src = e.target.result;
@@ -301,183 +300,88 @@
       }
     });
 
-    function addImageToCanvas(img) {
-      const maxWidth = 100;
-      const aspectRatio = img.width / img.height;
-      const width = maxWidth;
-      const height = maxWidth / aspectRatio;
-      const x = Math.random() * (canvas.width - width);
-      const y = Math.random() * (canvas.height - height);
-
-      ctx.drawImage(img, x, y, width, height);
-
-      images.push({ img, x, y, width, height });
-    }
-
-    function onCanvasMouseDown(e) {
-      const { offsetX: mouseX, offsetY: mouseY } = e;
-      selectedImage = null;
-      images.forEach(image => {
-        if (
-          mouseX >= image.x &&
-          mouseX <= image.x + image.width &&
-          mouseY >= image.y &&
-          mouseY <= image.y + image.height
-        ) {
-          selectedImage = image;
-        }
+    function addImageToCanvas(imgElement) {
+      var maxWidth = 100;
+      var scale = maxWidth / imgElement.width;
+      var img = new fabric.Image(imgElement, {
+        left: 100,
+        top: 100,
+        angle: 0,
+        opacity: 1,
+        scaleX: scale,
+        scaleY: scale
       });
+    images.push(img);
+canvas.add(img);
 
-      if (selectedImage) {
-        dragOffsetX = mouseX - selectedImage.x;
-        dragOffsetY = mouseY - selectedImage.y;
-        initialAspectRatio = selectedImage.width / selectedImage.height;
-
-        if (isMouseNearBorder(mouseX, mouseY, selectedImage)) {
-          resizing = true;
-          resizeStartWidth = selectedImage.width;
-          resizeStartHeight = selectedImage.height;
-        } else {
-          dragging = true;
-        }
-      }
-
-      drawCanvas();
     }
 
-    function onCanvasMouseMove(e) {
-      if (dragging && selectedImage) {
-        selectedImage.x = e.offsetX - dragOffsetX;
-        selectedImage.y = e.offsetY - dragOffsetY;
-        redrawCanvas();
-      } else if (resizing && selectedImage) {
-        const newWidth = Math.max(e.offsetX - selectedImage.x, 10);
-        const newHeight = newWidth / initialAspectRatio;
-        selectedImage.width = newWidth;
-        selectedImage.height = newHeight;
-        drawCanvas();
-      }
-    }
 
-    function onCanvasMouseUp() {
-      dragging = false;
-      resizing = false;
-    }
-
-    
-
-    function drawSelectionBorder(image) {
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(image.x, image.y, image.width, image.height);
-    }
-
-    function isMouseNearBorder(mouseX, mouseY, image) {
-      const near = 8; // Define how close the mouse should be to the border
-      return (
-        mouseX >= image.x + image.width - near &&
-        mouseX <= image.x + image.width + near &&
-        mouseY >= image.y &&
-        mouseY <= image.y + image.height
-      );
-    }
 
     function drawCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear existing objects on the canvas
+      canvas.clear();
+      // Load and draw the background image if it exists
       if (img.src) {
-        // Calculate the new canvas dimensions while maintaining the aspect ratio
-        var maxWidth = 300;
-        var ratio = img.width / img.height;
-        canvas.width = maxWidth;
-        canvas.height = maxWidth / ratio;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      }
-      images.forEach(image => {
-        ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
-        if (image === selectedImage) {
-          drawSelectionBorder(image);
-        }
-      });
-      texts.forEach((textObj, index) => {
-        addTextToCanvas(textObj, index === selectedTextIndex);
-      });
-    }
+        fabric.Image.fromURL(img.src, function (fabricImg) {
+          // Calculate the new canvas dimensions while maintaining the aspect ratio
+          var maxWidth = 300;
+          var ratio = fabricImg.width / fabricImg.height;
+          canvas.setWidth(maxWidth);
+          canvas.setHeight(maxWidth / ratio);
 
-    function addTextToCanvas(textObj, isSelected) {
-      ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
-      ctx.fillStyle = textObj.color;
-      ctx.fillText(textObj.text, textObj.x, textObj.y);
+          // Set the dimensions of the image
+          fabricImg.scaleToWidth(canvas.width);
+          fabricImg.set({
+            selectable: false,
+            hasControls: false,
+            hasBorders: false
+          });
 
-
-      if (isSelected) {
-        const textWidth = ctx.measureText(textObj.text).width;
-        const textHeight = parseInt(ctx.font, 10);
-        ctx.strokeStyle = 'blue';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(textObj.x, textObj.y - textHeight, textWidth, textHeight);
-      }
-    }
-
-    const dragStart = (event) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      texts.forEach((textObj, index) => {
-        const textWidth = ctx.measureText(textObj.text).width;
-        const textHeight = parseInt(ctx.font, 10);
-        if (x >= textObj.x && x <= textObj.x + textWidth && y >= textObj.y - textHeight && y <= textObj.y) {
-          textObj.isDragging = true;
-          selectedTextIndex = index;
-        }
-      });
-    };
-
-    const dragEnd = () => {
-      texts.forEach((textObj) => {
-        textObj.isDragging = false;
-      });
-    };
-
-    const drag = (event) => {
-      if (selectedTextIndex !== -1 && texts[selectedTextIndex].isDragging) {
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        texts[selectedTextIndex].x = x;
-        texts[selectedTextIndex].y = y;
-        drawCanvas();
-      }
-    };
-
-    canvas.addEventListener('mousedown', dragStart);
-    canvas.addEventListener('mouseup', dragEnd);
-    canvas.addEventListener('mousemove', drag);
-
-    canvas.addEventListener('mousedown', onCanvasMouseDown);
-    canvas.addEventListener('mousemove', onCanvasMouseMove);
-    canvas.addEventListener('mouseup', onCanvasMouseUp);
-
-    function drawText() {
-      if (text) {
-        const lines = text.split('\n');
-        const fontSize = 20;
-        ctx.font = `${fontSize}px ${fontSelect.value}`;
-        ctx.fillStyle = colorPicker.value;
-        lines.forEach((line, index) => {
-          ctx.fillText(line, textPosition.x, textPosition.y + (index * (fontSize + 5)));
+          canvas.setBackgroundImage(fabricImg, canvas.renderAll.bind(canvas));
         });
       }
+      // Add other images to the canvas
+      images.forEach(image => {
+        fabric.Image.fromURL(image.img.src, function (fabricImg) {
+          fabricImg.set({
+            left: image.x,
+            top: image.y,
+            width: image.width,
+            height: image.height
+          });
+
+          // Add a border if the image is selected
+          if (image === selectedImage) {
+            fabricImg.set({
+              stroke: 'red',
+              strokeWidth: 2
+            });
+          }
+
+          canvas.add(fabricImg);
+        });
+      });
+
+      // Add texts to the canvas
+      texts.forEach((textObj, index) => {
+
+
+        canvas.add(textObj);
+      });
+
+      canvas.renderAll();
     }
+
+
+
+
 
     addTextButton.addEventListener('click', function () {
       createNewText();
     });
 
-    function addTextToCanvas(textObj) {
-      ctx.font = `${textObj.fontSize}px ${textObj.fontFamily}`;
-      ctx.fillStyle = textObj.color;
-      ctx.fillText(textObj.text, textObj.x, textObj.y);
-    }
+
 
     function addTextArea(textObj) {
       const textArea = document.createElement('textarea');
@@ -494,23 +398,29 @@
       drawCanvas();
     }
 
-    function createNewText(text) {
-      const newText = {
-        text: text ? text : 'New Text',
-        x: 50,
-        y: 50,
-        fontSize: 20,
-        fontFamily: 'Arial',
-        color: '#000000',
-        isDragging: false,
-        selected: false
-      };
+    function createNewText(newText) {
+      if (!newText) {
+        newText = new fabric.Textbox(text ? text : 'New Text', {
+          left: 100,
+          top: 100,
+          fontFamily: 'Dosis',
+          fill: '#000',
+          fontSize: 30,
+          editable: true
+
+
+        });
+      }
       texts.push(newText);
       addTextArea(newText);
     }
 
 
+
+
     // Function to change the font of all texts on the canvas
+    // Change font function
+
     function changeFont(fontFamily) {
       texts.forEach(textObj => {
         textObj.fontFamily = fontFamily;
@@ -518,14 +428,33 @@
       drawCanvas();
     }
 
-    canvas.addEventListener('click', function (event) {
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+    function changeFont(newFontFamily) {
+      var activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === 'textbox') {
+        var selectedText = activeObject.getSelectedText();
+        if (selectedText) {
+          //var newFontFamily = 'Arial'; // The new font to apply
+          var selectedTextStyle = {
+            fontFamily: newFontFamily
+          };
 
-      // Show the slide down menu
-      slideDown.classList.add('show');
+          // Apply the new font to the selected text
+          activeObject.setSelectionStyles(selectedTextStyle);
+          canvas.renderAll();
+        }
+      }
+    }
+
+    // Add click event listener to detect clicks on textboxes
+    canvas.on('mouse:down', function (e) {
+      var target = e.target;
+      if (target && target.type === 'textbox') {
+        // Show the slide down menu
+        slideDown.classList.add('show');
+      }
     });
+
+
     drawCanvas();
 
     function showFontSelection() {
@@ -544,21 +473,248 @@
   </script>
   <script>
 
-    function loadImageToCanvas(src) {
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-      var img = new Image();
-      img.onload = function () {
-        // Calculate the new canvas dimensions while maintaining the aspect ratio
-        var maxWidth = 300;
-        var ratio = img.width / img.height;
-        canvas.width = maxWidth;
-        canvas.height = maxWidth / ratio;
-        context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-        context.drawImage(img, 0, 0, canvas.width, canvas.height);
-      };
-      img.src = src;
+    function loadImageToCanvas(url) {
+      /*
+      fabric.Image.fromURL(url, function (img) {
+        img.scaleToWidth(canvas.width);
+        canvas.add(img);
+        canvas.renderAll();
+      });
+      */
+      img = new Image();
+      img.src = url;
+      drawCanvas();
     }
+  </script>
+
+
+  <script>
+    // Snap settings
+    var snapDistance = 10; // Distance in pixels within which objects will snap
+    var snapLine = null; // To store the current snap line
+
+    function drawSnapLine(x, y, isHorizontal) {
+      // Remove existing snap line
+      if (snapLine) {
+        canvas.remove(snapLine);
+      }
+
+      if (isHorizontal) {
+        snapLine = new fabric.Line([0, y, canvas.getWidth(), y], {
+          stroke: 'red',
+          strokeWidth: 1,
+          selectable: false,
+          evented: false
+        });
+      } else {
+        snapLine = new fabric.Line([x, 0, x, canvas.getHeight()], {
+          stroke: 'red',
+          strokeWidth: 1,
+          selectable: false,
+          evented: false
+        });
+      }
+
+      canvas.add(snapLine);
+    }
+
+    function snapToGrid(obj) {
+      var canvasWidth = canvas.getWidth();
+      var canvasHeight = canvas.getHeight();
+
+      var left = obj.left;
+      var top = obj.top;
+      var width = obj.getScaledWidth();
+      var height = obj.getScaledHeight();
+
+      var snapX = left;
+      var snapY = top;
+      var drawHorizontalLine = false;
+      var drawVerticalLine = false;
+
+      // Snap to edges of other objects
+      canvas.getObjects().forEach(function (otherObj) {
+        if (otherObj === obj) return; // Skip the current object
+
+        var otherLeft = otherObj.left;
+        var otherTop = otherObj.top;
+        var otherWidth = otherObj.getScaledWidth();
+        var otherHeight = otherObj.getScaledHeight();
+
+        // Check horizontal snapping
+        if (Math.abs(top + height - (otherTop)) < snapDistance || Math.abs(top - (otherTop + otherHeight)) < snapDistance) {
+          snapY = otherTop + otherHeight - height;
+          drawHorizontalLine = true;
+        } else if (Math.abs(top - otherTop) < snapDistance || Math.abs(top + height - (otherTop + otherHeight)) < snapDistance) {
+          snapY = otherTop;
+          drawHorizontalLine = true;
+        }
+
+        // Check vertical snapping
+        if (Math.abs(left + width - (otherLeft)) < snapDistance || Math.abs(left - (otherLeft + otherWidth)) < snapDistance) {
+          snapX = otherLeft + otherWidth - width;
+          drawVerticalLine = true;
+        } else if (Math.abs(left - otherLeft) < snapDistance || Math.abs(left + width - (otherLeft + otherWidth)) < snapDistance) {
+          snapX = otherLeft;
+          drawVerticalLine = true;
+        }
+      });
+
+      // Snap to canvas center
+      if (Math.abs(left + width / 2 - canvasWidth / 2) < snapDistance) {
+        snapX = canvasWidth / 2 - width / 2;
+        drawVerticalLine = true;
+      }
+
+      if (Math.abs(top + height / 2 - canvasHeight / 2) < snapDistance) {
+        snapY = canvasHeight / 2 - height / 2;
+        drawHorizontalLine = true;
+      }
+
+      // Snap to canvas edges
+      if (Math.abs(left) < snapDistance) {
+        snapX = 0;
+        drawVerticalLine = true;
+      }
+
+      if (Math.abs(left + width - canvasWidth) < snapDistance) {
+        snapX = canvasWidth - width;
+        drawVerticalLine = true;
+      }
+
+      if (Math.abs(top) < snapDistance) {
+        snapY = 0;
+        drawHorizontalLine = true;
+      }
+
+      if (Math.abs(top + height - canvasHeight) < snapDistance) {
+        snapY = canvasHeight - height;
+        drawHorizontalLine = true;
+      }
+
+      // Draw snap lines if needed
+      if (drawHorizontalLine) {
+        drawSnapLine(snapX + width / 2, snapY + height / 2, true);
+      } else if (drawVerticalLine) {
+        drawSnapLine(snapX + width / 2, snapY + height / 2, false);
+      } else {
+        // If no snapping, remove snap line
+        if (snapLine) {
+          canvas.remove(snapLine);
+          snapLine = null;
+        }
+      }
+
+      obj.set({
+        left: snapX,
+        top: snapY
+      });
+
+      obj.setCoords();
+      canvas.renderAll();
+    }
+
+    canvas.on('object:moving', function (e) {
+      var obj = e.target;
+      snapToGrid(obj);
+    });
+
+    canvas.on('object:modified', function () {
+      // Clear snap line after object is released
+      if (snapLine) {
+        canvas.remove(snapLine);
+        snapLine = null;
+      }
+    });
+
+    createNewText(new fabric.Textbox('wedding dinner', {
+      left: 115,
+      top: 140,
+      width: 200,
+      fontFamily: 'Dosis',
+      fill: '#000',
+      fontSize: 12,
+      fontStyle: 'italic',
+      editable: true
+
+
+    }));
+
+    createNewText(new fabric.Textbox('BRIDE', {
+      left: 120,
+      top: 170,
+      width: 200,
+      fontFamily: 'Dosis',
+      fill: '#000',
+      fontSize: 25,
+
+      fontWeight: 'bold',
+      editable: true
+
+
+    }));
+
+    createNewText(new fabric.Textbox('&', {
+      left: 137,
+      top: 210,
+      width: 200,
+      fontFamily: 'Dosis',
+      fill: '#000',
+      fontSize: 25,
+      fontWeight: 'bold',
+
+      editable: true
+
+
+    }));
+
+    createNewText(new fabric.Textbox('GROOM', {
+      left: 113,
+      top: 250,
+      width: 200,
+      fontFamily: 'Dosis',
+      fill: '#000',
+      fontSize: 25,
+      fontWeight: 'bold',
+      editable: true
+    }));
+
+    createNewText(new fabric.Textbox('MARCH 23, 2019\nVENUE', {
+      left: 100,
+      top: 300,
+      width: 105,
+      fontFamily: 'Dosis',
+      textAlign: 'center',
+      fill: '#000',
+      fontSize: 14,
+      fontWeight: 'normal',
+      editable: true
+    }));
+
+    createNewText(new fabric.Textbox('FIRST COURSE\nDESCRIPTION', {
+      left: 100,
+      top: 400,
+      width: 105,
+      fontFamily: 'Dosis',
+      textAlign: 'center',
+      fill: '#000',
+      fontSize: 14,
+      fontWeight: 'normal',
+      editable: true
+    }));
+
+    createNewText(new fabric.Textbox('DESSERTS\nOPTION 1\nOPTION 2', {
+      left: 100,
+      top: 480,
+      width: 105,
+      fontFamily: 'Dosis',
+      textAlign: 'center',
+      fill: '#000',
+      fontSize: 14,
+      fontWeight: 'normal',
+      editable: true
+    }));
+
   </script>
 
 </body>
